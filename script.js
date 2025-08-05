@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const hardLabel = document.getElementById("hard-label");
     const cardStatsContainer = document.querySelector(".stats-card");
 
+
+
+
     function validateUsername(username){
         if(username.trim() == ""){
             alert("Username should not be empty");
@@ -24,27 +27,59 @@ document.addEventListener("DOMContentLoaded", function() {
         return isMatching;
     }
 
-    async function fetchUserDetails(username){
-        const url = `https://leetcode-stats-api.herokuapp.com/${username}`
-        try{
-            searchButton.textContent = "Searching..."
+    async function fetchUserDetails(username) {
+        const url = `https://leetcode-stats-api.herokuapp.com/${username}`;
+        try {
+            searchButton.textContent = "Searching...";
             searchButton.disabled = true;
 
             const response = await fetch(url);
-            if(!response){
+            if (!response.ok) {
                 throw new Error("Unable to fetch the user details");
             }
 
-            const data = await response.json();
-            console.log("Logging data:", data);
-        }
-        catch(error){
-            statsContainer.innerHTML = `<p>No data Found</p>`
-        }
-        finally{
+            const parsedData = await response.json();
+            console.log("Logging data:", parsedData);
+
+
+            if (parsedData.status === "error") {
+                statsContainer.innerHTML = `<p>User does not exist.</p>`;
+                return; // Exit early
+            }
+
+            displayUserData(parsedData);
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            statsContainer.innerHTML = `<p>No data found. Please try again later.</p>`;
+        } finally {
             searchButton.textContent = "Search";
             searchButton.disabled = false;
         }
+    }
+
+    function updateProgress(solved, total, label, circle){
+        const progressDegree = (solved/total)*100;
+        circle.style.setProperty("--progress-degree", `${progressDegree}%`);
+        label.textContent = `${solved}/${total}`;
+    }
+
+    function displayUserData(parsedData){
+        const totalQues = parsedData.totalQuestions;
+        const totalEasyQues = parsedData.totalEasy;
+        const totalMediumQues = parsedData.totalMedium;
+        const totalHardQues = parsedData.totalHard;
+
+
+        const totalQuesSolved = parsedData.totalSolved;
+        const easyQuesSolved = parsedData.easySolved;
+        const mediumQuesSolved = parsedData.mediumSolved;
+        const hardQuesSolved = parsedData.hardSolved;
+
+        updateProgress(easyQuesSolved, totalEasyQues, easyLabel, easyProgressCircle);
+        updateProgress(mediumQuesSolved, totalMediumQues, mediumLabel, mediumProgressCircle);
+        updateProgress(hardQuesSolved, totalHardQues, hardLabel, hardProgressCircle);
+
     }
 
     searchButton.addEventListener('click', function() {
