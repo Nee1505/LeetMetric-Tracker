@@ -80,6 +80,40 @@ document.addEventListener("DOMContentLoaded", function() {
         updateProgress(mediumQuesSolved, totalMediumQues, mediumLabel, mediumProgressCircle);
         updateProgress(hardQuesSolved, totalHardQues, hardLabel, hardProgressCircle);
 
+
+        const cardData = [
+            {
+                label: "Overall Submission",
+                value: Object.values(parsedData.submissionCalendar)
+                            .reduce((acc, count) => acc + count, 0)
+            },
+            {
+                label: "Total Solved",
+                value: parsedData.totalSolved.toLocaleString()
+            },
+            {
+                label: "Acceptance Rate",
+                value: parsedData.acceptanceRate + "%"
+            },
+            {
+                label: "Ranking",
+                value: "#" + parsedData.ranking.toLocaleString()
+            }
+        ];
+
+        cardStatsContainer.innerHTML = cardData.map(
+            data=> {
+                return `
+                    <div class ="card">
+                        <h4>${data.label}</h4>
+                        <p>${data.value}</p>
+                    </div>
+                  `  ;
+            }
+        ).join("");
+
+
+
     }
 
     searchButton.addEventListener('click', function() {
