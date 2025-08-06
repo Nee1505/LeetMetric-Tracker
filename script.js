@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    const container = document.querySelector(".container")
     const searchButton = document.getElementById("search-btn");
     const userNameInput =document.getElementById("user-input");
     const statsContainer = document.querySelector(".stats-container");
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     async function fetchUserDetails(username) {
         const url = `https://leetcode-stats-api.herokuapp.com/${username}`;
         try {
-            searchButton.textContent = "Searching...";
+            searchButton.innerHTML = `<span class="spinner"></span> Searching...`;
             searchButton.disabled = true;
 
             const response = await fetch(url);
@@ -48,6 +49,8 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
             displayUserData(parsedData);
+
+            localStorage.setItem("lastUser", username);
 
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -116,6 +119,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }
 
+    const lastUser = localStorage.getItem("lastUser");
+    if (lastUser) {
+        const lastUserInfo = document.createElement("div");
+        lastUserInfo.classList.add("last-user-info");
+        lastUserInfo.innerHTML = `
+            <p>Last searched user: <strong>${lastUser}</strong></p>
+            <button id="load-last-user">Load</button>
+        `;
+        container.appendChild(lastUserInfo);
+
+        document.getElementById("load-last-user").addEventListener("click", () => {
+            userNameInput.value = lastUser;
+            fetchUserDetails(lastUser);
+        });
+    }
+
+
+    userNameInput.addEventListener("keypress", e => {
+        if (e.key === "Enter") searchButton.click();
+    });
+
+
     searchButton.addEventListener('click', function() {
         const username = userNameInput.value;
         console.log("logging username:", username);
@@ -123,5 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
             fetchUserDetails(username);
         }
     })
+
+    
 });
 
