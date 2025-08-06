@@ -21,7 +21,7 @@ body{
     gap: 1rem;
     padding: 20px;
     border-radius: 5px;
-    width: 50%;
+    width: 70%;
     max-width: 600px;
 }
 
@@ -83,4 +83,22 @@ h1{
 .circle span{
     position: relative;
     z-index: 2;
+}
+
+.stats-card{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.card{
+    background-color: rgb(232, 183, 8);
+    width: 200px;
+    max-width: 250px;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 150px;
 }
