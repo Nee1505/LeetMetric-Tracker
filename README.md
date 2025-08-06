@@ -25,7 +25,7 @@ A clean and interactive web app to **track LeetCode stats** for any user. Just e
 
 ## 📸 Preview
 
-<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/5afeeda9-cc84-4e45-a060-8fe42efe6f24" />
+<img width="1918" height="897" alt="image" src="https://github.com/user-attachments/assets/a88b8523-14cd-4709-b67f-75c2363e7fcd" />
 
 ---
 
